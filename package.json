@@ -11,7 +11,8 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "clean": "turbo clean"
+    "clean": "turbo clean",
+    "postinstall": "prisma generate --schema=apps/api/prisma/schema.prisma"
   },
   "devDependencies": {
     "turbo": "latest"
