@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  LECTURER
+  DEPARTMENT_ADMIN
+  FACULTY_ADMIN
+  INSTITUTION_ADMIN
+  SUPER_ADMIN
+}
+
+model Institution {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  domain    String   @unique
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  faculties Faculty[]
+  users     User[]
+}
+
+model Faculty {
+  id            String   @id @default(uuid())
+  name          String
+  institutionId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  institution Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  departments Department[]
+  users       User[]
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String
+  facultyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  faculty   Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  courses   Course[]
+  users     User[]
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String?
+  googleId      String?  @unique
+  firstName     String
+  lastName      String
+  role          Role     @default(STUDENT)
+  avatar        String?
+  level         Int?     // e.g., 100, 200, 300
+
+  institutionId String?
+  facultyId     String?
+  departmentId  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  institution Institution? @relation(fields: [institutionId], references: [id])
+  faculty     Faculty?     @relation(fields: [facultyId], references: [id])
+  department  Department?  @relation(fields: [departmentId], references: [id])
+
+  enrollments   Enrollment[]
+  teaching      Course[]     @relation("CourseLecturer")
+  assignments   Assignment[] @relation("LecturerAssignments")
+  submissions   Submission[]
+  messages      Message[]
+}
+
+model Course {
+  id           String   @id @default(uuid())
+  code         String   // e.g., CSC301
+  title        String
+  description  String?
+  level        Int
+  credits      Int
+  departmentId String
+  lecturerId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  department Department @relation(fields: [departmentId], references: [id])
+  lecturer   User?      @relation("CourseLecturer", fields: [lecturerId], references: [id])
+  
+  enrollments  Enrollment[]
+  assignments  Assignment[]
+  materials    Resource[]
+  announcements Announcement[]
+}
+
+model Enrollment {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  progress Float  @default(0)
+
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+model Assignment {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime
+  courseId    String
+  lecturerId  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lecturer User   @relation("LecturerAssignments", fields: [lecturerId], references: [id])
+
+  submissions Submission[]
+}
+
+model Submission {
+  id           String   @id @default(uuid())
+  content      String?
+  fileUrl      String?
+  grade        Float?
+  feedback     String?
+  userId       String
+  assignmentId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assignmentId])
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String
+  fileUrl     String
+  type        String   // PDF, DOCX, PPTX, VIDEO
+  courseId    String
+  uploadedBy  String   // userId
+
+  createdAt DateTime @default(now())
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  courseId  String?
+  target    String   // COURSE, DEPARTMENT, FACULTY, INSTITUTION
+
+  createdAt DateTime @default(now())
+
+  course Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  senderId  String
+  groupId   String?  // for group chats
+  
+  createdAt DateTime @default(now())
+
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-foreground: #ffffff;
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
+  --color-sidebar: #0f172a;
+  --color-sidebar-foreground: #f8fafc;
+  --color-sidebar-active: #2563eb;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-border: #e2e8f0;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+}
+
+/* Smooth scroll for anchor links — GPU-composited, no layout cost */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.4); border-radius: 99px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.7); }
+
+/* GPU-acceleration utilities */
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.gpu-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Paint containment — prevents scroll-triggered repaints from propagating */
+.section-contain {
+  contain: layout paint;
+}
+
+/* SVG wave fills */
+.wave-fill-white    { fill: #ffffff; }
+.wave-fill-slate50  { fill: #f8fafc; }
+.wave-fill-slate900 { fill: #0f172a; }
+.wave-fill-indigo   { fill: #4f46e5; }
+.wave-bg-white      { background: #ffffff; }
+.wave-bg-slate50    { background: #f8fafc; }
+.wave-bg-slate900   { background: #0f172a; }
+
+/* Feature card icon colours — static so Tailwind scanner sees them */
+.icon-indigo  { background: #e0e7ff; color: #4f46e5; }
+.icon-violet  { background: #ede9fe; color: #7c3aed; }
+.icon-fuchsia { background: #fae8ff; color: #a21caf; }
+.icon-rose    { background: #ffe4e6; color: #e11d48; }
+.icon-emerald { background: #d1fae5; color: #059669; }
+.icon-amber   { background: #fef3c7; color: #d97706; }
+.icon-cyan    { background: #cffafe; color: #0891b2; }
+.icon-blue    { background: #dbeafe; color: #2563eb; }
+
+/* Dark-section role card accent colours */
+.role-indigo  { background: rgba(99,102,241,0.12); color: #a5b4fc; }
+.role-violet  { background: rgba(139,92,246,0.12); color: #c4b5fd; }
+.role-fuchsia { background: rgba(217,70,239,0.12); color: #f0abfc; }
+.role-link-indigo  { color: #a5b4fc; }
+.role-link-violet  { color: #c4b5fd; }
+.role-link-fuchsia { color: #f0abfc; }
