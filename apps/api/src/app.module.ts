@@ -13,6 +13,7 @@ import { MessagesModule } from './messages/messages.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ResourcesModule } from './resources/resources.module';
 import { SubmissionsModule } from './submissions/submissions.module';
+import { EnrollmentsModule } from './enrollments/enrollments.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
     NotificationsModule,
     ResourcesModule,
     SubmissionsModule,
+    EnrollmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

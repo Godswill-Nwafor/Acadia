@@ -54,6 +54,22 @@ export class CoursesService {
     });
   }
 
+  async findEnrolledCourses(userId: string) {
+    const enrollments = await this.prisma.enrollment.findMany({
+      where: { userId },
+      include: {
+        course: {
+          include: {
+            lecturer: { select: { id: true, firstName: true, lastName: true } },
+            department: { select: { id: true, name: true } },
+            _count: { select: { assignments: true, materials: true } },
+          },
+        },
+      },
+    });
+    return enrollments.map(e => e.course);
+  }
+
   async update(id: string, updateCourseDto: UpdateCourseDto) {
     const existing = await this.prisma.course.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Course not found');

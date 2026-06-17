@@ -1,11 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
+interface JwtUser { id: string; email: string; role: string }
+
+@UseGuards(JwtAuthGuard)
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
+
+  // Returns enrolled courses for students, taught courses for lecturers
+  @Get('my')
+  findMy(@Req() req: { user: JwtUser }) {
+    if (req.user.role === 'LECTURER') {
+      return this.coursesService.findByLecturer(req.user.id);
+    }
+    return this.coursesService.findEnrolledCourses(req.user.id);
+  }
 
   @Post()
   create(@Body() createCourseDto: CreateCourseDto) {

@@ -1,15 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
+interface JwtUser { id: string; email: string; role: string }
+
+@UseGuards(JwtAuthGuard)
 @Controller('assignments')
 export class AssignmentsController {
   constructor(private readonly assignmentsService: AssignmentsService) {}
 
+  // Lecturer creates an assignment (lecturerId from JWT)
   @Post()
-  create(@Body() createAssignmentDto: CreateAssignmentDto) {
-    return this.assignmentsService.create(createAssignmentDto);
+  create(@Req() req: { user: JwtUser }, @Body() dto: CreateAssignmentDto) {
+    return this.assignmentsService.create({ ...dto, lecturerId: req.user.id });
+  }
+
+  // My assignments — for students shows course assignments, for lecturers shows own
+  @Get('my')
+  findMy(@Req() req: { user: JwtUser }) {
+    return this.assignmentsService.findByLecturer(req.user.id);
   }
 
   @Get()
