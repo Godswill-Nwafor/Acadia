@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -25,8 +25,8 @@ const plans = [
     highlight: false,
     badge: "",
     features: {
-      "Students": "Up to 50",
-      "Lecturers": "Up to 5",
+      "Students": "Up to 500",
+      "Lecturers": "Up to 50",
       "Active courses": "Up to 3",
       "File storage": "1 GB",
       "Assignment management": true,
@@ -55,8 +55,8 @@ const plans = [
     highlight: true,
     badge: "Most popular",
     features: {
-      "Students": "Up to 500",
-      "Lecturers": "Up to 50",
+      "Students": "Up to 1,000",
+      "Lecturers": "Up to 500",
       "Active courses": "Unlimited",
       "File storage": "20 GB",
       "Assignment management": true,
@@ -146,7 +146,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
       <header className="h-14 flex items-center justify-between px-6 md:px-10 border-b border-slate-200/60 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
-        <Link href="/"><Image src="/LOGO.png" alt="Acadia" width={130} height={34} priority /></Link>
+        <Link href="/"><Image src="/LOGO.png" alt="Acadia" width={130} height={34} priority style={{ height: "auto" }} /></Link>
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
           <Link href="/#features" className="hover:text-indigo-600 transition-colors">Features</Link>
           <Link href="/about" className="hover:text-indigo-600 transition-colors">How it Works</Link>
@@ -364,7 +364,7 @@ export default function PricingPage() {
 
       <footer className="bg-slate-900 text-slate-400 py-10 text-center text-sm">
         <div className="flex items-center justify-center mb-4">
-          <Image src="/LOGO.png" alt="Acadia" width={120} height={32} className="brightness-0 invert" />
+          <Image src="/LOGO.png" alt="Acadia" width={120} height={32} className="brightness-0 invert" style={{ height: "auto" }} />
         </div>
         <p>© {new Date().getFullYear()} Acadia Platforms · <Link href="/" className="hover:text-white transition-colors">Home</Link> · <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></p>
       </footer>

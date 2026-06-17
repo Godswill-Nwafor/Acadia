@@ -36,7 +36,9 @@ export class GradesService {
       create: { ...data, total, grade, points },
       include: {
         user: { select: { id: true, firstName: true, lastName: true } },
-        course: { select: { id: true, code: true, title: true, credits: true } },
+        course: {
+          select: { id: true, code: true, title: true, credits: true },
+        },
       },
     });
   }
@@ -44,7 +46,11 @@ export class GradesService {
   async findByUser(userId: string, semester?: string) {
     return this.prisma.grade.findMany({
       where: { userId, ...(semester ? { semester } : {}) },
-      include: { course: { select: { id: true, code: true, title: true, credits: true } } },
+      include: {
+        course: {
+          select: { id: true, code: true, title: true, credits: true },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -52,7 +58,9 @@ export class GradesService {
   async findByCourse(courseId: string, semester?: string) {
     return this.prisma.grade.findMany({
       where: { courseId, ...(semester ? { semester } : {}) },
-      include: { user: { select: { id: true, firstName: true, lastName: true } } },
+      include: {
+        user: { select: { id: true, firstName: true, lastName: true } },
+      },
       orderBy: { total: 'desc' },
     });
   }
@@ -66,8 +74,14 @@ export class GradesService {
     if (!grades.length) return { cgpa: 0, totalCredits: 0, gradePoints: 0 };
 
     const totalCredits = grades.reduce((sum, g) => sum + g.course.credits, 0);
-    const gradePoints = grades.reduce((sum, g) => sum + g.points * g.course.credits, 0);
-    const cgpa = totalCredits > 0 ? parseFloat((gradePoints / totalCredits).toFixed(2)) : 0;
+    const gradePoints = grades.reduce(
+      (sum, g) => sum + g.points * g.course.credits,
+      0,
+    );
+    const cgpa =
+      totalCredits > 0
+        ? parseFloat((gradePoints / totalCredits).toFixed(2))
+        : 0;
 
     return { cgpa, totalCredits, gradePoints, grades };
   }

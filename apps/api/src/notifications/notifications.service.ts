@@ -16,7 +16,7 @@ export class NotificationsService {
   private notifications: Notification[] = [];
   private counter = 0;
 
-  async create(dto: CreateNotificationDto): Promise<Notification> {
+  create(dto: CreateNotificationDto): Notification {
     const notification: Notification = {
       id: `notif_${++this.counter}`,
       userId: dto.userId,
@@ -30,22 +30,29 @@ export class NotificationsService {
     return notification;
   }
 
-  async findByUser(userId: string): Promise<Notification[]> {
-    return this.notifications.filter(n => n.userId === userId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  findByUser(userId: string): Notification[] {
+    return this.notifications
+      .filter((n) => n.userId === userId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  async markRead(id: string): Promise<Notification | undefined> {
-    const n = this.notifications.find(n => n.id === id);
+  markRead(id: string): Notification | undefined {
+    const n = this.notifications.find((n) => n.id === id);
     if (n) n.read = true;
     return n;
   }
 
-  async markAllRead(userId: string) {
-    this.notifications.forEach(n => { if (n.userId === userId) n.read = true; });
+  markAllRead(userId: string) {
+    this.notifications.forEach((n) => {
+      if (n.userId === userId) n.read = true;
+    });
     return { message: 'All notifications marked as read' };
   }
 
-  async getUnreadCount(userId: string) {
-    return { count: this.notifications.filter(n => n.userId === userId && !n.read).length };
+  getUnreadCount(userId: string) {
+    return {
+      count: this.notifications.filter((n) => n.userId === userId && !n.read)
+        .length,
+    };
   }
 }

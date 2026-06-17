@@ -1,9 +1,26 @@
-import { Controller, Post, Delete, Get, Param, Body, Req, UseGuards, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Param,
+  Body,
+  Req,
+  UseGuards,
+  Patch,
+} from '@nestjs/common';
 import { EnrollmentsService } from './enrollments.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CreateEnrollmentDto, UpdateProgressDto } from './dto/create-enrollment.dto';
+import {
+  CreateEnrollmentDto,
+  UpdateProgressDto,
+} from './dto/create-enrollment.dto';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('enrollments')
@@ -30,7 +47,10 @@ export class EnrollmentsController {
 
   // Check if enrolled in a specific course
   @Get('check/:courseId')
-  isEnrolled(@Req() req: { user: JwtUser }, @Param('courseId') courseId: string) {
+  isEnrolled(
+    @Req() req: { user: JwtUser },
+    @Param('courseId') courseId: string,
+  ) {
     return this.service.isEnrolled(req.user.id, courseId);
   }
 

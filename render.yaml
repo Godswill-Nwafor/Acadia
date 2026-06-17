@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: acadia-api
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm install && npm run build --workspace=apps/api
+    startCommand: node apps/api/dist/main.js
+    healthCheckPath: /api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        sync: false          # e.g. https://acadia-api.onrender.com/api/auth/google/callback
+      - key: CLIENT_URL
+        sync: false          # e.g. https://your-app.vercel.app
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

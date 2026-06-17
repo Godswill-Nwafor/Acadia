@@ -31,7 +31,13 @@ export class ScheduleService {
       where: { dayOfWeek },
       include: {
         course: {
-          select: { id: true, code: true, title: true, level: true, credits: true },
+          select: {
+            id: true,
+            code: true,
+            title: true,
+            level: true,
+            credits: true,
+          },
           include: {
             lecturer: { select: { id: true, firstName: true, lastName: true } },
           },
@@ -57,7 +63,12 @@ export class ScheduleService {
 
   async update(
     id: string,
-    data: Partial<{ dayOfWeek: number; startTime: string; endTime: string; venue: string }>,
+    data: Partial<{
+      dayOfWeek: number;
+      startTime: string;
+      endTime: string;
+      venue: string;
+    }>,
   ) {
     const existing = await this.prisma.schedule.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Schedule entry not found');

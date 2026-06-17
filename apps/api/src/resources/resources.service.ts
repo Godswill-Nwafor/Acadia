@@ -34,7 +34,10 @@ export class ResourcesService {
   async update(id: string, updateResourceDto: UpdateResourceDto) {
     const existing = await this.prisma.resource.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Resource not found');
-    return this.prisma.resource.update({ where: { id }, data: updateResourceDto });
+    return this.prisma.resource.update({
+      where: { id },
+      data: updateResourceDto,
+    });
   }
 
   async remove(id: string) {

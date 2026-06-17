@@ -1,10 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('courses')

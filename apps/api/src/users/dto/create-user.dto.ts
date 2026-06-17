@@ -1,4 +1,12 @@
-import { IsEmail, IsString, IsOptional, IsEnum, IsNumber, Min, Max } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsNumber,
+  Min,
+  Max,
+} from 'class-validator';
 
 export enum CreateUserRole {
   STUDENT = 'STUDENT',

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -6,19 +10,28 @@ export class EnrollmentsService {
   constructor(private prisma: PrismaService) {}
 
   async enroll(userId: string, courseId: string) {
-    const course = await this.prisma.course.findUnique({ where: { id: courseId } });
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
     if (!course) throw new NotFoundException('Course not found');
 
     const existing = await this.prisma.enrollment.findUnique({
       where: { userId_courseId: { userId, courseId } },
     });
-    if (existing) throw new ConflictException('Already enrolled in this course');
+    if (existing)
+      throw new ConflictException('Already enrolled in this course');
 
     return this.prisma.enrollment.create({
       data: { userId, courseId },
       include: {
         course: {
-          select: { id: true, code: true, title: true, level: true, credits: true },
+          select: {
+            id: true,
+            code: true,
+            title: true,
+            level: true,
+            credits: true,
+          },
         },
       },
     });
@@ -43,7 +56,9 @@ export class EnrollmentsService {
           include: {
             lecturer: { select: { id: true, firstName: true, lastName: true } },
             department: { select: { id: true, name: true } },
-            _count: { select: { assignments: true, materials: true, enrollments: true } },
+            _count: {
+              select: { assignments: true, materials: true, enrollments: true },
+            },
           },
         },
       },
@@ -57,8 +72,12 @@ export class EnrollmentsService {
       include: {
         user: {
           select: {
-            id: true, firstName: true, lastName: true,
-            email: true, avatar: true, level: true,
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            avatar: true,
+            level: true,
           },
         },
       },

@@ -1,10 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('assignments')
@@ -44,7 +58,10 @@ export class AssignmentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAssignmentDto: UpdateAssignmentDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAssignmentDto: UpdateAssignmentDto,
+  ) {
     return this.assignmentsService.update(id, updateAssignmentDto);
   }
 

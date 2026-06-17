@@ -1,6 +1,16 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete,
-  UseGuards, Req, UseInterceptors, UploadedFile, BadRequestException,
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
@@ -10,7 +20,11 @@ import { UpdateResourceDto } from './dto/update-resource.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('resources')
@@ -29,7 +43,10 @@ export class ResourcesController {
     @Req() req: { user: JwtUser },
   ) {
     if (!file) throw new BadRequestException('No file provided');
-    const fileUrl = await this.cloudinaryService.uploadFile(file, 'acadia/resources');
+    const fileUrl = await this.cloudinaryService.uploadFile(
+      file,
+      'acadia/resources',
+    );
     return this.resourcesService.create({
       title: body.title,
       fileUrl,
@@ -46,7 +63,9 @@ export class ResourcesController {
   }
 
   @Get()
-  findAll() { return this.resourcesService.findAll(); }
+  findAll() {
+    return this.resourcesService.findAll();
+  }
 
   @Get('course/:courseId')
   findByCourse(@Param('courseId') courseId: string) {
@@ -54,7 +73,9 @@ export class ResourcesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { return this.resourcesService.findOne(id); }
+  findOne(@Param('id') id: string) {
+    return this.resourcesService.findOne(id);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateResourceDto) {
@@ -62,5 +83,7 @@ export class ResourcesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.resourcesService.remove(id); }
+  remove(@Param('id') id: string) {
+    return this.resourcesService.remove(id);
+  }
 }

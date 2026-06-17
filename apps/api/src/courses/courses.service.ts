@@ -10,7 +10,12 @@ export class CoursesService {
   async create(createCourseDto: CreateCourseDto) {
     return this.prisma.course.create({
       data: createCourseDto,
-      include: { department: true, lecturer: { select: { id: true, firstName: true, lastName: true, email: true } } },
+      include: {
+        department: true,
+        lecturer: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+      },
     });
   }
 
@@ -18,7 +23,9 @@ export class CoursesService {
     return this.prisma.course.findMany({
       include: {
         department: { include: { faculty: true } },
-        lecturer: { select: { id: true, firstName: true, lastName: true, email: true } },
+        lecturer: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
         _count: { select: { enrollments: true, assignments: true } },
       },
     });
@@ -29,8 +36,12 @@ export class CoursesService {
       where: { id },
       include: {
         department: { include: { faculty: true } },
-        lecturer: { select: { id: true, firstName: true, lastName: true, email: true } },
-        _count: { select: { enrollments: true, assignments: true, materials: true } },
+        lecturer: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+        _count: {
+          select: { enrollments: true, assignments: true, materials: true },
+        },
       },
     });
     if (!course) throw new NotFoundException('Course not found');
@@ -40,7 +51,11 @@ export class CoursesService {
   async findByDepartment(departmentId: string) {
     return this.prisma.course.findMany({
       where: { departmentId },
-      include: { lecturer: { select: { id: true, firstName: true, lastName: true, email: true } } },
+      include: {
+        lecturer: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+      },
     });
   }
 
@@ -67,7 +82,7 @@ export class CoursesService {
         },
       },
     });
-    return enrollments.map(e => e.course);
+    return enrollments.map((e) => e.course);
   }
 
   async update(id: string, updateCourseDto: UpdateCourseDto) {
@@ -76,7 +91,10 @@ export class CoursesService {
     return this.prisma.course.update({
       where: { id },
       data: updateCourseDto,
-      include: { department: true, lecturer: { select: { id: true, firstName: true, lastName: true } } },
+      include: {
+        department: true,
+        lecturer: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
   }
 

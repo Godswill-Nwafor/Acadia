@@ -1,9 +1,22 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('messages')
@@ -17,10 +30,14 @@ export class MessagesController {
   }
 
   @Get()
-  findAll() { return this.service.findAll(); }
+  findAll() {
+    return this.service.findAll();
+  }
 
   @Get('conversations')
-  getConversations() { return this.service.getConversations(); }
+  getConversations() {
+    return this.service.getConversations();
+  }
 
   @Get('my')
   findMy(@Req() req: { user: JwtUser }) {
@@ -38,5 +55,7 @@ export class MessagesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.service.remove(id); }
+  remove(@Param('id') id: string) {
+    return this.service.remove(id);
+  }
 }

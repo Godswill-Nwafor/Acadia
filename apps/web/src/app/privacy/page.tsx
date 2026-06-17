@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
       <header className="h-14 flex items-center justify-between px-6 md:px-10 border-b border-slate-200/60 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
-        <Link href="/"><Image src="/LOGO.png" alt="Acadia" width={130} height={34} priority /></Link>
+        <Link href="/"><Image src="/LOGO.png" alt="Acadia" width={130} height={34} priority style={{ height: "auto" }} /></Link>
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" className="font-semibold text-slate-700 hover:text-indigo-600 hidden sm:inline-flex" asChild>
             <Link href="/login">Log in</Link>
@@ -149,7 +149,7 @@ export default function PrivacyPage() {
 
       <footer className="bg-slate-900 text-slate-400 py-10 text-center text-sm">
         <div className="flex items-center justify-center mb-4">
-          <Image src="/LOGO.png" alt="Acadia" width={120} height={32} className="brightness-0 invert" />
+          <Image src="/LOGO.png" alt="Acadia" width={120} height={32} className="brightness-0 invert" style={{ height: "auto" }} />
         </div>
         <p>© {new Date().getFullYear()} Acadia Platforms · <Link href="/" className="hover:text-white transition-colors">Home</Link></p>
       </footer>

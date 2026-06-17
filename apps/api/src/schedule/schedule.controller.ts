@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
@@ -9,7 +18,14 @@ export class ScheduleController {
 
   @Post()
   create(
-    @Body() body: { courseId: string; dayOfWeek: number; startTime: string; endTime: string; venue?: string },
+    @Body()
+    body: {
+      courseId: string;
+      dayOfWeek: number;
+      startTime: string;
+      endTime: string;
+      venue?: string;
+    },
   ) {
     return this.service.create(body);
   }
@@ -32,7 +48,13 @@ export class ScheduleController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() body: Partial<{ dayOfWeek: number; startTime: string; endTime: string; venue: string }>,
+    @Body()
+    body: Partial<{
+      dayOfWeek: number;
+      startTime: string;
+      endTime: string;
+      venue: string;
+    }>,
   ) {
     return this.service.update(id, body);
   }

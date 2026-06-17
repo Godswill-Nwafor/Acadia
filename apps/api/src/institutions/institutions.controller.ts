@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { InstitutionsService } from './institutions.service';
 
 @Controller('institutions')
@@ -6,7 +14,14 @@ export class InstitutionsController {
   constructor(private readonly institutionsService: InstitutionsService) {}
 
   @Post()
-  create(@Body() createInstitutionDto: { name: string; domain: string; logo?: string }) {
+  create(
+    @Body()
+    createInstitutionDto: {
+      name: string;
+      domain: string;
+      logo?: string;
+    },
+  ) {
     return this.institutionsService.create(createInstitutionDto);
   }
 
@@ -26,7 +41,11 @@ export class InstitutionsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInstitutionDto: { name?: string; domain?: string; logo?: string }) {
+  update(
+    @Param('id') id: string,
+    @Body()
+    updateInstitutionDto: { name?: string; domain?: string; logo?: string },
+  ) {
     return this.institutionsService.update(id, updateInstitutionDto);
   }
 
@@ -37,8 +56,14 @@ export class InstitutionsController {
 
   // Faculties
   @Post(':id/faculties')
-  createFaculty(@Param('id') id: string, @Body() createFacultyDto: { name: string }) {
-    return this.institutionsService.createFaculty({ ...createFacultyDto, institutionId: id });
+  createFaculty(
+    @Param('id') id: string,
+    @Body() createFacultyDto: { name: string },
+  ) {
+    return this.institutionsService.createFaculty({
+      ...createFacultyDto,
+      institutionId: id,
+    });
   }
 
   @Get(':id/faculties')
@@ -48,8 +73,14 @@ export class InstitutionsController {
 
   // Departments
   @Post('faculties/:facultyId/departments')
-  createDepartment(@Param('facultyId') facultyId: string, @Body() createDepartmentDto: { name: string }) {
-    return this.institutionsService.createDepartment({ ...createDepartmentDto, facultyId });
+  createDepartment(
+    @Param('facultyId') facultyId: string,
+    @Body() createDepartmentDto: { name: string },
+  ) {
+    return this.institutionsService.createDepartment({
+      ...createDepartmentDto,
+      facultyId,
+    });
   }
 
   @Get('faculties/:facultyId/departments')
@@ -59,7 +90,10 @@ export class InstitutionsController {
 
   // Enrollments
   @Post('enrollments/users/:userId/courses/:courseId')
-  enrollUser(@Param('userId') userId: string, @Param('courseId') courseId: string) {
+  enrollUser(
+    @Param('userId') userId: string,
+    @Param('courseId') courseId: string,
+  ) {
     return this.institutionsService.enrollUser(userId, courseId);
   }
 
@@ -74,7 +108,10 @@ export class InstitutionsController {
   }
 
   @Delete('enrollments/users/:userId/courses/:courseId')
-  unenroll(@Param('userId') userId: string, @Param('courseId') courseId: string) {
+  unenroll(
+    @Param('userId') userId: string,
+    @Param('courseId') courseId: string,
+  ) {
     return this.institutionsService.unenroll(userId, courseId);
   }
 }

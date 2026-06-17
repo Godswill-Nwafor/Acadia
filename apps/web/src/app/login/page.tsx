@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -53,7 +53,7 @@ export default function LoginPage() {
         >
           {/* Logo */}
           <div className="mb-8">
-            <Image src="/LOGO.png" alt="Acadia" width={130} height={35} priority />
+            <Image src="/LOGO.png" alt="Acadia" width={130} height={35} priority style={{ height: "auto" }} />
           </div>
 
           <h1 className="text-3xl font-extrabold text-slate-900 mb-1">Log in to your account</h1>

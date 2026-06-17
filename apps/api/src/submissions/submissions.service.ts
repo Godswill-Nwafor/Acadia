@@ -1,6 +1,13 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateSubmissionDto, GradeSubmissionDto } from './dto/create-submission.dto';
+import {
+  CreateSubmissionDto,
+  GradeSubmissionDto,
+} from './dto/create-submission.dto';
 
 @Injectable()
 export class SubmissionsService {
@@ -8,19 +15,28 @@ export class SubmissionsService {
 
   async create(dto: CreateSubmissionDto) {
     const existing = await this.prisma.submission.findUnique({
-      where: { userId_assignmentId: { userId: dto.userId, assignmentId: dto.assignmentId } },
+      where: {
+        userId_assignmentId: {
+          userId: dto.userId,
+          assignmentId: dto.assignmentId,
+        },
+      },
     });
     if (existing) throw new ConflictException('Already submitted');
     return this.prisma.submission.create({
       data: dto,
-      include: { user: { select: { id: true, firstName: true, lastName: true } } },
+      include: {
+        user: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
   }
 
   async findAll() {
     return this.prisma.submission.findMany({
       include: {
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
         assignment: { select: { id: true, title: true } },
       },
       orderBy: { createdAt: 'desc' },
@@ -36,7 +52,9 @@ export class SubmissionsService {
   async findByUser(userId: string) {
     return this.prisma.submission.findMany({
       where: { userId },
-      include: { assignment: { select: { id: true, title: true, dueDate: true } } },
+      include: {
+        assignment: { select: { id: true, title: true, dueDate: true } },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -45,7 +63,9 @@ export class SubmissionsService {
     return this.prisma.submission.findMany({
       where: { assignmentId },
       include: {
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -57,7 +77,9 @@ export class SubmissionsService {
     return this.prisma.submission.update({
       where: { id },
       data: { grade: dto.grade, feedback: dto.feedback },
-      include: { user: { select: { id: true, firstName: true, lastName: true } } },
+      include: {
+        user: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
   }
 

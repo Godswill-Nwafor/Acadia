@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -144,7 +144,7 @@ function DashboardIllustration() {
           <rect x="363" y={144+i*24} width="8" height="8" rx="2"
             fill={["#3b82f6","#8b5cf6","#10b981","#f59e0b"][i]} />
           <rect x="377" y={145+i*24} width="52" height="6" rx="2" fill="#334155" />
-          <rect x="357+78" y={144+i*24} width="20" height="8" rx="3"
+          <rect x={357+78} y={144+i*24} width="20" height="8" rx="3"
             fill={["#dbeafe","#ede9fe","#d1fae5","#fef3c7"][i]} />
         </g>
       ))}
@@ -269,7 +269,7 @@ export default function Home() {
       {/* ── Navbar ─────────────────────────────────────────────── */}
       <header className="h-12 flex items-center justify-between px-6 md:px-10 border-b border-slate-200/60 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
         <Link href="/">
-          <Image src="/LOGO.png" alt="Acadia" width={150} height={38} priority />
+          <Image src="/LOGO.png" alt="Acadia" width={150} height={38} priority style={{ height: "auto" }} />
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
@@ -847,7 +847,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-10 mb-12">
             <div className="max-w-xs">
-              <Image src="/LOGO.png" alt="Acadia" width={160} height={42} className="brightness-0 invert mb-4" />
+              <Image src="/LOGO.png" alt="Acadia" width={160} height={42} className="brightness-0 invert mb-4" style={{ height: "auto" }} />
               <p className="text-slate-400 text-sm leading-relaxed">
                 The operating system for modern education — connecting students, lecturers and institutions seamlessly.
               </p>

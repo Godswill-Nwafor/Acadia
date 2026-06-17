@@ -12,7 +12,9 @@ export class AnnouncementsService {
   }
 
   async findAll() {
-    return this.prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } });
+    return this.prisma.announcement.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   async findOne(id: string) {
@@ -22,11 +24,17 @@ export class AnnouncementsService {
   }
 
   async findByCourse(courseId: string) {
-    return this.prisma.announcement.findMany({ where: { courseId }, orderBy: { createdAt: 'desc' } });
+    return this.prisma.announcement.findMany({
+      where: { courseId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   async findByTarget(target: string) {
-    return this.prisma.announcement.findMany({ where: { target }, orderBy: { createdAt: 'desc' } });
+    return this.prisma.announcement.findMany({
+      where: { target },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   async update(id: string, data: UpdateAnnouncementDto) {

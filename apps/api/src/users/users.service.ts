@@ -3,51 +3,56 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+const WITHOUT_PASSWORD = { password: true } as const;
+
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = await this.prisma.user.create({ data: createUserDto });
-    const { password, ...result } = user;
-    return result;
+    return this.prisma.user.create({
+      data: createUserDto,
+      omit: WITHOUT_PASSWORD,
+    });
   }
 
   async findAll() {
-    const users = await this.prisma.user.findMany({
+    return this.prisma.user.findMany({
+      omit: WITHOUT_PASSWORD,
       include: { institution: true, faculty: true, department: true },
     });
-    return users.map(({ password, ...rest }) => rest);
   }
 
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      omit: WITHOUT_PASSWORD,
       include: { institution: true, faculty: true, department: true },
     });
     if (!user) throw new NotFoundException('User not found');
-    const { password, ...result } = user;
-    return result;
+    return user;
   }
 
   async findMe(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      omit: WITHOUT_PASSWORD,
       include: {
         institution: true,
         faculty: true,
         department: true,
         enrollments: {
           include: {
-            course: { select: { id: true, code: true, title: true, level: true } },
+            course: {
+              select: { id: true, code: true, title: true, level: true },
+            },
           },
         },
         _count: { select: { enrollments: true, submissions: true } },
       },
     });
     if (!user) throw new NotFoundException('User not found');
-    const { password, ...result } = user;
-    return result;
+    return user;
   }
 
   async findByEmail(email: string) {
@@ -57,13 +62,12 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const existing = await this.prisma.user.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('User not found');
-    const user = await this.prisma.user.update({
+    return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+      omit: WITHOUT_PASSWORD,
       include: { institution: true, faculty: true, department: true },
     });
-    const { password, ...result } = user;
-    return result;
   }
 
   async remove(id: string) {

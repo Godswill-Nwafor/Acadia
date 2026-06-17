@@ -9,9 +9,20 @@ export class AttendanceController {
 
   @Post('mark')
   mark(
-    @Body() body: { userId: string; courseId: string; status: 'present' | 'absent' | 'late'; date?: string },
+    @Body()
+    body: {
+      userId: string;
+      courseId: string;
+      status: 'present' | 'absent' | 'late';
+      date?: string;
+    },
   ) {
-    return this.service.markAttendance(body.userId, body.courseId, body.status, body.date);
+    return this.service.markAttendance(
+      body.userId,
+      body.courseId,
+      body.status,
+      body.date,
+    );
   }
 
   @Get('course/:courseId')

@@ -40,7 +40,14 @@ export class AssignmentsService {
         lecturer: { select: { id: true, firstName: true, lastName: true } },
         submissions: {
           include: {
-            user: { select: { id: true, firstName: true, lastName: true, email: true } },
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+              },
+            },
           },
         },
       },
@@ -73,14 +80,18 @@ export class AssignmentsService {
   async update(id: string, updateAssignmentDto: UpdateAssignmentDto) {
     const existing = await this.prisma.assignment.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Assignment not found');
-    const data: any = { ...updateAssignmentDto };
-    if (updateAssignmentDto.dueDate) {
-      data.dueDate = new Date(updateAssignmentDto.dueDate);
-    }
     return this.prisma.assignment.update({
       where: { id },
-      data,
-      include: { course: true, lecturer: { select: { id: true, firstName: true, lastName: true } } },
+      data: {
+        ...updateAssignmentDto,
+        ...(updateAssignmentDto.dueDate
+          ? { dueDate: new Date(updateAssignmentDto.dueDate) }
+          : {}),
+      },
+      include: {
+        course: true,
+        lecturer: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
   }
 

@@ -1,9 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { SubmissionsService } from './submissions.service';
-import { CreateSubmissionDto, GradeSubmissionDto } from './dto/create-submission.dto';
+import {
+  CreateSubmissionDto,
+  GradeSubmissionDto,
+} from './dto/create-submission.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-interface JwtUser { id: string; email: string; role: string }
+interface JwtUser {
+  id: string;
+  email: string;
+  role: string;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('submissions')
@@ -23,10 +40,14 @@ export class SubmissionsController {
   }
 
   @Get()
-  findAll() { return this.service.findAll(); }
+  findAll() {
+    return this.service.findAll();
+  }
 
   @Get('user/:userId')
-  findByUser(@Param('userId') userId: string) { return this.service.findByUser(userId); }
+  findByUser(@Param('userId') userId: string) {
+    return this.service.findByUser(userId);
+  }
 
   @Get('assignment/:assignmentId')
   findByAssignment(@Param('assignmentId') assignmentId: string) {
@@ -40,8 +61,12 @@ export class SubmissionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { return this.service.findOne(id); }
+  findOne(@Param('id') id: string) {
+    return this.service.findOne(id);
+  }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.service.remove(id); }
+  remove(@Param('id') id: string) {
+    return this.service.remove(id);
+  }
 }

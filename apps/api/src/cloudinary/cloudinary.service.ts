@@ -12,12 +12,16 @@ export class CloudinaryService {
     });
   }
 
-  async uploadFile(file: Express.Multer.File, folder = 'acadia'): Promise<string> {
+  async uploadFile(
+    file: Express.Multer.File,
+    folder = 'acadia',
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       const upload = cloudinary.uploader.upload_stream(
         { folder, resource_type: 'auto' },
         (error, result) => {
-          if (error || !result) reject(new InternalServerErrorException('Upload failed'));
+          if (error || !result)
+            reject(new InternalServerErrorException('Upload failed'));
           else resolve(result.secure_url);
         },
       );
@@ -30,6 +34,6 @@ export class CloudinaryService {
     const filename = parts[parts.length - 1].split('.')[0];
     const folder = parts[parts.length - 2];
     const publicId = `${folder}/${filename}`;
-    return cloudinary.uploader.destroy(publicId);
+    return cloudinary.uploader.destroy(publicId) as Promise<{ result: string }>;
   }
 }
