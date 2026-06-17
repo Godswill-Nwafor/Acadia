@@ -855,16 +855,30 @@ export default function Home() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
               {[
-                { heading: "Product", links: ["Features","How it Works","Pricing","Security"] },
-                { heading: "Company", links: ["About","Blog","Careers","Contact"] },
-                { heading: "Legal",   links: ["Privacy Policy","Terms of Service","Cookie Policy"] },
+                { heading: "Product", links: [
+                  { label: "Features",    href: "/#features" },
+                  { label: "How it Works",href: "/about" },
+                  { label: "Pricing",     href: "/pricing" },
+                  { label: "Security",    href: "/security" },
+                ]},
+                { heading: "Company", links: [
+                  { label: "About",    href: "/about" },
+                  { label: "Blog",     href: "/blog" },
+                  { label: "Careers",  href: "/careers" },
+                  { label: "Contact",  href: "/contact" },
+                ]},
+                { heading: "Legal", links: [
+                  { label: "Privacy Policy",    href: "/privacy" },
+                  { label: "Terms of Service",  href: "/terms" },
+                  { label: "Cookie Policy",     href: "/cookies" },
+                ]},
               ].map(col => (
                 <div key={col.heading}>
                   <h4 className="font-bold text-white mb-3 text-xs uppercase tracking-widest">{col.heading}</h4>
                   <ul className="space-y-2">
                     {col.links.map(l => (
-                      <li key={l}>
-                        <a href="#" className="text-slate-400 hover:text-white transition-colors duration-150">{l}</a>
+                      <li key={l.label}>
+                        <Link href={l.href} className="text-slate-400 hover:text-white transition-colors duration-150">{l.label}</Link>
                       </li>
                     ))}
                   </ul>
