@@ -386,7 +386,7 @@ export default function AboutPage() {
                 <Button size="lg" className="rounded-full px-10 h-12 font-bold bg-white text-indigo-700 hover:bg-indigo-50 shadow-xl" asChild>
                   <Link href="/signup">Create free account</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-full px-10 h-12 font-semibold border-white/30 text-white hover:bg-white/10" asChild>
+                <Button size="lg" className="rounded-full px-10 h-12 font-semibold bg-white/10 border border-white/30 text-white hover:bg-white/20" asChild>
                   <Link href="/login">Sign in</Link>
                 </Button>
               </motion.div>

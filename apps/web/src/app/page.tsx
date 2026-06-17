@@ -694,33 +694,105 @@ export default function Home() {
         <WaveWhiteToSlate50 />
 
         <section id="institutions" className="py-20 bg-slate-50 section-contain">
-          <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="max-w-5xl mx-auto px-6 text-center">
             <motion.p
               initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={vp}
-              className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-10"
+              className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3"
             >
               Trusted by leading institutions
             </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={vp}
+              transition={{ delay: 0.1 }}
+              className="text-slate-500 text-sm mb-12"
+            >
+              Powering academic excellence across Nigeria&apos;s top universities
+            </motion.p>
+
             <motion.div
               initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={vp} transition={{ duration: 0.5 }}
-              className="flex flex-wrap justify-center items-center gap-10 md:gap-20"
+              className="grid grid-cols-2 md:grid-cols-4 gap-5"
             >
-              {[
-                { name: "Covenant", cls: "bg-indigo-600 rounded-full" },
-                { name: "UNILAG",   cls: "bg-violet-700 rounded-xl" },
-                { name: "MTU",      cls: "bg-pink-700 rounded-md" },
-                { name: "Babcock",  cls: "bg-cyan-600 rounded-br-3xl rounded-tl-3xl" },
-              ].map(({ name, cls }) => (
-                <motion.div key={name}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="flex items-center gap-3 font-extrabold text-xl text-slate-700 grayscale hover:grayscale-0 transition-all duration-300"
-                >
-                  <div className={`w-10 h-10 shadow-md ${cls}`} />
-                  {name}
-                </motion.div>
-              ))}
+              {/* Babcock University */}
+              <motion.div
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 p-6 flex flex-col items-center gap-3"
+              >
+                <div className="w-full h-14 flex items-center justify-center">
+                  <Image
+                    src="/babcock.webp"
+                    alt="Babcock University"
+                    width={160}
+                    height={56}
+                    className="object-contain w-full h-full grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+                <p className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors tracking-wide text-center leading-tight">
+                  Babcock University
+                </p>
+              </motion.div>
+
+              {/* University of Lagos */}
+              <motion.div
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 p-6 flex flex-col items-center gap-3"
+              >
+                <div className="w-full h-14 flex items-center justify-center">
+                  <Image
+                    src="/unilag.webp"
+                    alt="University of Lagos"
+                    width={56}
+                    height={56}
+                    className="object-contain h-full grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+                <p className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors tracking-wide text-center leading-tight">
+                  University of Lagos
+                </p>
+              </motion.div>
+
+              {/* Mountain Top University */}
+              <motion.div
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 p-6 flex flex-col items-center gap-3"
+              >
+                <div className="w-full h-14 flex items-center justify-center">
+                  <Image
+                    src="/MTU.webp"
+                    alt="Mountain Top University"
+                    width={56}
+                    height={56}
+                    className="object-contain h-full grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+                <p className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors tracking-wide text-center leading-tight">
+                  Mountain Top University
+                </p>
+              </motion.div>
+
+              {/* Covenant University */}
+              <motion.div
+                whileHover={{ scale: 1.03, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 p-6 flex flex-col items-center gap-3"
+              >
+                <div className="w-full h-14 flex items-center justify-center">
+                  <Image
+                    src="/covenant.webp"
+                    alt="Covenant University"
+                    width={56}
+                    height={56}
+                    className="object-contain h-full grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+                <p className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors tracking-wide text-center leading-tight">
+                  Covenant University
+                </p>
+              </motion.div>
             </motion.div>
           </div>
         </section>
@@ -757,8 +829,8 @@ export default function Home() {
                 >
                   <Link href="/signup">Get started for free</Link>
                 </Button>
-                <Button size="lg" variant="outline"
-                  className="rounded-full px-10 h-12 text-base font-semibold border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
+                <Button size="lg"
+                  className="rounded-full px-10 h-12 text-base font-semibold bg-white/10 border border-white/30 text-white hover:bg-white/20 w-full sm:w-auto"
                   asChild
                 >
                   <Link href="/about">Learn more</Link>
