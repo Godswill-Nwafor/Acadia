@@ -17,6 +17,17 @@ enum Role {
   SUPER_ADMIN
 }
 
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum BillingPeriod {
+  MONTHLY
+  YEARLY
+}
+
 model Institution {
   id        String   @id @default(uuid())
   name      String   @unique
@@ -25,8 +36,28 @@ model Institution {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  faculties Faculty[]
-  users     User[]
+  faculties    Faculty[]
+  users        User[]
+  subscription Subscription?
+}
+
+model Subscription {
+  id                 String        @id @default(uuid())
+  institutionId      String        @unique
+  plan               Plan          @default(FREE)
+  billingPeriod      BillingPeriod @default(MONTHLY)
+  status             String        @default("active") // active, past_due, cancelled, trial
+  trialEndsAt        DateTime?
+  currentPeriodStart DateTime      @default(now())
+  currentPeriodEnd   DateTime?
+  paystackCustomerId String?
+  paystackSubId      String?
+  maxStudents        Int           @default(50)
+  maxLecturers       Int           @default(5)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  institution Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 }
 
 model Faculty {
