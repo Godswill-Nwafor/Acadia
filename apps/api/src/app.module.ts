@@ -14,6 +14,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ResourcesModule } from './resources/resources.module';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { ScheduleModule } from './schedule/schedule.module';
+import { GradesModule } from './grades/grades.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { EnrollmentsModule } from './enrollments/enrollments.module';
     ResourcesModule,
     SubmissionsModule,
     EnrollmentsModule,
+    ScheduleModule,
+    GradesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

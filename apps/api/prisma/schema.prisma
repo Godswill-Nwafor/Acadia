@@ -52,8 +52,8 @@ model Subscription {
   currentPeriodEnd   DateTime?
   paystackCustomerId String?
   paystackSubId      String?
-  maxStudents        Int           @default(50)
-  maxLecturers       Int           @default(5)
+  maxStudents        Int           @default(500)
+  maxLecturers       Int           @default(50)
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -93,7 +93,7 @@ model User {
   lastName      String
   role          Role     @default(STUDENT)
   avatar        String?
-  level         Int?     // e.g., 100, 200, 300
+  level         Int?
 
   institutionId String?
   facultyId     String?
@@ -107,10 +107,13 @@ model User {
   department  Department?  @relation(fields: [departmentId], references: [id])
 
   enrollments   Enrollment[]
-  teaching      Course[]     @relation("CourseLecturer")
-  assignments   Assignment[] @relation("LecturerAssignments")
+  teaching      Course[]        @relation("CourseLecturer")
+  assignments   Assignment[]    @relation("LecturerAssignments")
   submissions   Submission[]
   messages      Message[]
+  attendances   Attendance[]
+  grades        Grade[]
+  markedAttendances Attendance[] @relation("AttendanceMarker")
 }
 
 model Course {
@@ -129,10 +132,13 @@ model Course {
   department Department @relation(fields: [departmentId], references: [id])
   lecturer   User?      @relation("CourseLecturer", fields: [lecturerId], references: [id])
   
-  enrollments  Enrollment[]
-  assignments  Assignment[]
-  materials    Resource[]
+  enrollments   Enrollment[]
+  assignments   Assignment[]
+  materials     Resource[]
   announcements Announcement[]
+  schedule      Schedule[]
+  attendances   Attendance[]
+  grades        Grade[]
 }
 
 model Enrollment {
@@ -213,9 +219,61 @@ model Message {
   id        String   @id @default(uuid())
   content   String
   senderId  String
-  groupId   String?  // for group chats
-  
+  groupId   String?
+
   createdAt DateTime @default(now())
 
   sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id         String   @id @default(uuid())
+  userId     String
+  courseId   String
+  date       DateTime @db.Date
+  status     String   @default("absent") // present | absent | late
+  markedById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  markedBy User?  @relation("AttendanceMarker", fields: [markedById], references: [id])
+
+  @@unique([userId, courseId, date])
+}
+
+model Schedule {
+  id         String   @id @default(uuid())
+  courseId   String
+  dayOfWeek  Int      // 0=Sunday … 6=Saturday
+  startTime  String   // "08:00"
+  endTime    String   // "10:00"
+  venue      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Grade {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  semester  String   // e.g. "2024/2025 First"
+  ca        Float    @default(0)
+  exam      Float    @default(0)
+  total     Float    @default(0)
+  grade     String   @default("F")  // A, B, C, D, E, F
+  points    Float    @default(0)    // 5.0, 4.0 …
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId, semester])
 }
